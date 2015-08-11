@@ -14,13 +14,21 @@ import java.util.List;
 
 public class Article {
     private String text;
-    private ArrayList<Phrase> sentences;
+    private ArrayList<Phrase> phrases;
     private ArrayList facts;
+    private String subject;
 
     public Article(String text) {
         this.text = text;
-        sentences = new ArrayList();
+        phrases = new ArrayList();
     }
+
+    public Article(String text, String subject) {
+        this.text = text;
+        this.subject = subject;
+    }
+    
+    
     
     public void createSentences(){                  //filtering for the indication of new chapters needs to be added
         Reader reader = new StringReader(text);
@@ -28,7 +36,7 @@ public class Article {
 
         for (List<HasWord> sentence : dp) {
             Phrase line = new Phrase(Sentence.listToString(sentence));
-            sentences.add(line);
+            phrases.add(line);
         }
     }
     
@@ -41,11 +49,11 @@ public class Article {
     }
 
     public ArrayList<Phrase> getSentences() {
-        return sentences;
+        return phrases;
     }
 
     public void setSentences(ArrayList<Phrase> sentences) {
-        this.sentences = sentences;
+        this.phrases = sentences;
     }
 
     public ArrayList getFacts() {
