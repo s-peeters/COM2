@@ -4,10 +4,14 @@
  * and open the template in the editor.
  */
 package wikiminer;
+import edu.stanford.nlp.ling.CoreLabel;
 import java.util.ArrayList;
 import edu.stanford.nlp.ling.HasWord;
 import edu.stanford.nlp.ling.Sentence;
+import edu.stanford.nlp.process.CoreLabelTokenFactory;
 import edu.stanford.nlp.process.DocumentPreprocessor;
+import edu.stanford.nlp.process.PTBTokenizer;
+import edu.stanford.nlp.process.WordToSentenceProcessor;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.List;
@@ -26,16 +30,40 @@ public class Article {
     public Article(String text, String subject) {
         this.text = text;
         this.subject = subject;
+        phrases = new ArrayList();
     }
     
     public void createSentences(){ 
-        Reader reader = new StringReader(text);
+        //// Tokenize
+        List<CoreLabel> tokens = new ArrayList<>();
+        PTBTokenizer<CoreLabel> tokenizer = new PTBTokenizer<>(new StringReader(text), new CoreLabelTokenFactory(), "");
+        while (tokenizer.hasNext()) {
+            tokens.add(tokenizer.next());
+        }
+        //// Split sentences from tokens
+        List<List<CoreLabel>> sentences = new WordToSentenceProcessor<CoreLabel>().process(tokens);
+        //// Join back together
+        int end;
+        int start = 0;
+        for (List<CoreLabel> sentence: sentences) {
+            end = sentence.get(sentence.size()-1).endPosition();
+            phrases.add(new Phrase(text.substring(start, end).trim()));
+            start = end;
+            System.out.println(phrases.get(phrases.size()-1).getText());
+        }
+        
+        /*Reader reader = new StringReader(text);
         DocumentPreprocessor dp = new DocumentPreprocessor(reader);
 
         for (List<HasWord> sentence : dp) {
-            Phrase line = new Phrase(Sentence.listToString(sentence));
+            String out = Sentence.listToString(sentence);
+            //replace -LRB- and -RRB- with opening and closing brackets
+            out = out.replace("-LRB-", "(");
+            out = out.replace("-RRB-", ")");
+            Phrase line = new Phrase(out);
             phrases.add(line);
-        }
+            System.out.println(line.getText());
+        }*/
     }
     
     public String getText() {

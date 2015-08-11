@@ -32,22 +32,30 @@ public class WikiMiner {
     }
     
     public static void mine(File file, boolean replaceHe) throws IOException{   //output type may need to be changed
-        String raw = deserializeString(file);
-        raw = raw.split("====PAGE-START====",2)[2]; //remove first page start
-        while(raw.length()>5){
-            String[] split = raw.split("====PAGE-START====",2);
-            raw = split[2];
+        String rest = deserializeString(file);
+        String current;
+        String[] split;
+        rest = rest.split("====PAGE-START====",2)[1]; //remove first page start
+        do{
+            if(rest.contains("====PAGE-START====")){
+                split = rest.split("====PAGE-START====",2);
+                rest = split[1];
+                current = split[0]; 
+            }
+            else{
+                current = rest;
+                rest = null;
+            }
             //get subject
-            split = split[1].split("https://en.wikipedia.org/wiki/",2);
-            split = split[2].split("\n",2);
-            String subject = split[1].replaceAll("_", " ");
+            current = current.split("https://en.wikipedia.org/wiki/",2)[1];
+            split = current.split("\n",2);
+            String subject = split[0].replaceAll("_", " ");
             //replace he/she in split[2]
-            String text = split[2];
-            if (replaceHe) text = replaceHe(text, subject);
+            if (replaceHe) current = replaceHe(current, subject);
             //remove lines starting with = 
-            text = text.replaceAll("(?m)^=.*", "");
+            current = current.replaceAll("(?m)^=.*", "");
             //create Article object
-            Article article = new Article(text, subject); 
+            Article article = new Article(current, subject); 
             article.createSentences();
             //AIDA --> replace text in phrase object
             //remove phrases with less than 2 entities
@@ -56,6 +64,7 @@ public class WikiMiner {
             //
             //rest of mining process
         }
+        while(rest != null);
     }
     
     public static String replaceHe(String text, String subject){
