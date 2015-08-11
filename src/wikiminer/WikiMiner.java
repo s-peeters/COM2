@@ -47,7 +47,7 @@ public class WikiMiner {
             //remove lines starting with = 
             text = text.replaceAll("(?m)^=.*", "");
             //create Article object
-            Article article = new Article(split[2], subject); 
+            Article article = new Article(text, subject); 
             article.createSentences();
             //AIDA --> replace text in phrase object
             //remove phrases with less than 2 entities

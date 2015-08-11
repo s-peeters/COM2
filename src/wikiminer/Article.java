@@ -28,7 +28,7 @@ public class Article {
         this.subject = subject;
     }
     
-    public void createSentences(){                  //filtering for the indication of new chapters needs to be added
+    public void createSentences(){ 
         Reader reader = new StringReader(text);
         DocumentPreprocessor dp = new DocumentPreprocessor(reader);
 
