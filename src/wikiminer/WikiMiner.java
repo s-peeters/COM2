@@ -59,10 +59,10 @@ public class WikiMiner {
     }
     
     public static String replaceHe(String text, String subject){
-            text = text.replaceAll("He ", " " + subject + " ");
-            text = text.replaceAll(" he ", " " + subject + " ");
-            text = text.replaceAll("She ", " " + subject + " ");
-            text = text.replaceAll(" she ", " " + subject + " ");
+            text = text.replace("He ", " " + subject + " ");
+            text = text.replace(" he ", " " + subject + " ");
+            text = text.replace("She ", " " + subject + " ");
+            text = text.replace(" she ", " " + subject + " ");
             return text;
     }
     
