@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/Users/matteo/Repositories/ualberta/libs/stup/lucene-core-4.4.0.jar"/>
+	<classpathentry kind="lib" path="/Users/matteo/Repositories/ualberta/libs/stup/lucene-analyzers-common-4.4.0.jar"/>
+	<classpathentry kind="lib" path="/Users/matteo/Repositories/ualberta/libs/stup/lucene-queryparser-4.4.0.jar"/>
+	<classpathentry kind="lib" path="/Users/matteo/Desktop/stanford-corenlp-full-2015-04-20/stanford-corenlp-3.5.2.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
