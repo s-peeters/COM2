@@ -29,9 +29,7 @@ public class NER {
 		
 		List<Evidence> output = new ArrayList<Evidence>();
 		for (Phrase sent : sentences){
-			String sentence = sent.getText();
-			System.out.println("SENT: " + sentence);
-			
+			String sentence = sent.getTextTagged();
 			List<Triple<String,Integer,Integer>> out = classifier.classifyToCharacterOffsets(sentence);
 			String currentInput = sentence;
 			String currentMention = null;
@@ -60,6 +58,7 @@ public class NER {
 					evidenceStart.setSubject_type(mention.first);	
 					
 					evidenceBefore = evidenceStart;
+					mentionBefore = currentMention;
 				}
 			}
 		}
@@ -70,7 +69,7 @@ public class NER {
 	}
 	
 	public static void main(String[] args){
-		String text = "Albert Einstain was born in India. John Smith is a native of Finland and Helsinki.";
+		String text = "Albert Einstain was born [[det]] India. John Smith is a native of Finland and Helsinki and USA.";
 		Article test = new Article(text);
 		test.createPhrases();
 		NER ner = new NER();
