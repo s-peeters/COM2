@@ -57,13 +57,14 @@ public class WikiMiner {
             //create Article object
             Article article = new Article(current, subject); 
             article.createPhrases();
-            article.dropPhrases();
             //AIDA --> replace text in phrase object
-            //remove phrases with less than 2 entities
+            article.dropPhrases();
             //postag
             //replace 7 tags with the tag
-            //
-            //rest of mining process
+            //create phraseParts
+            for(Phrase phrase : article.getPhrases()){
+                phrase.createPhraseParts();
+            }
         }
         while(rest != null);
     }

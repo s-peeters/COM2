@@ -76,11 +76,11 @@ public class Article {
         this.text = text;
     }
 
-    public ArrayList<Phrase> getSentences() {
+    public ArrayList<Phrase> getPhrases() {
         return phrases;
     }
 
-    public void setSentences(ArrayList<Phrase> sentences) {
+    public void setPhrases(ArrayList<Phrase> sentences) {
         this.phrases = sentences;
     }
 
