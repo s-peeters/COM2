@@ -30,6 +30,11 @@ public class Evidence {
 		this.object_type = object_type;
 		this.pattern = pattern;
 	}
+	
+	/**
+	 * 
+	 */
+	public Evidence(){}
 
 	public String getSubject_name() {
 		return subject_name;
@@ -78,5 +83,11 @@ public class Evidence {
 	public void setRelations(String relations) {
 		this.relations = relations;
 	}
+	
+	public String toString(){
+		String print = this.subject_name +" --- "+ this.subject_type +" --- "+ this.object_name +" --- "+ this.object_type +" --- "+ this.pattern;
+		return print;
+	}
+
 
 }

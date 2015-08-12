@@ -52,9 +52,8 @@ public class NERDemo {
 		System.out.println("INPUT: " + input);
 		System.out.println();
 		
-		
-		String currentMention = null;
 		String currentInput = input;
+		String currentMention = null;
 		String mentionBefore = null;
 		String typeMentionBefore = null;
 		String pattern = null;
