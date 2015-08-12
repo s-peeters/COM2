@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package wikiminer;
-import com.mysql.jdbc.StringUtils;
 import edu.stanford.nlp.ling.CoreLabel;
 import java.util.ArrayList;
 import edu.stanford.nlp.process.CoreLabelTokenFactory;
@@ -12,6 +11,7 @@ import edu.stanford.nlp.process.PTBTokenizer;
 import edu.stanford.nlp.process.WordToSentenceProcessor;
 import java.io.StringReader;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 
 public class Article {
     private String text;
@@ -46,7 +46,6 @@ public class Article {
             end = sentence.get(sentence.size()-1).endPosition();
             phrases.add(new Phrase(text.substring(start, end).trim()));
             start = end;
-            System.out.println(phrases.get(phrases.size()-1).getText());
         }
         
         /*Reader reader = new StringReader(text);
@@ -63,9 +62,9 @@ public class Article {
         }*/
     }
     
-    public void dropSentences(){
+    public void dropPhrases(){
         for (int index = 0; index < phrases.size(); index++){
-            int count = StringUtils.countMatches(phrases.get(index).getTextAIDA(), ">");
+            if (StringUtils.countMatches(phrases.get(index).getTextAIDA(), ">") < 2) phrases.remove(index); //how will this influence the for loop? Do other phrases index--?
         }
     }
     

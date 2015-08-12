@@ -57,6 +57,7 @@ public class WikiMiner {
             //create Article object
             Article article = new Article(current, subject); 
             article.createPhrases();
+            article.dropPhrases();
             //AIDA --> replace text in phrase object
             //remove phrases with less than 2 entities
             //postag
