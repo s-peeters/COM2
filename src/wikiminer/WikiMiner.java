@@ -9,6 +9,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import tagger.POSTagger;
 
 /**
  *
@@ -21,7 +22,7 @@ public class WikiMiner {
      * @param args the command line arguments
      */
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ClassNotFoundException {
         File file = new File(fileLocation); //insert file location here
         try {
             mine(file, replaceHe);
@@ -31,7 +32,7 @@ public class WikiMiner {
         }
     }
     
-    public static void mine(File file, boolean replaceHe) throws IOException{   //output type may need to be changed
+    public static void mine(File file, boolean replaceHe) throws IOException, ClassNotFoundException{   //output type may need to be changed
         String rest = deserializeString(file);
         String current;
         String[] split;
@@ -60,11 +61,7 @@ public class WikiMiner {
             //AIDA --> replace text in phrase object
             article.dropPhrases();
             //postag
-            //replace 7 tags with the tag
-            //create phraseParts
-            for(Phrase phrase : article.getPhrases()){
-                phrase.createPhraseParts();
-            }
+            POSTagger.Tag(article);
         }
         while(rest != null);
     }
