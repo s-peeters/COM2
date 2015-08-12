@@ -11,7 +11,6 @@ import edu.stanford.nlp.process.PTBTokenizer;
 import edu.stanford.nlp.process.WordToSentenceProcessor;
 import java.io.StringReader;
 import java.util.List;
-import org.apache.commons.lang3.StringUtils;
 
 public class Article {
     private String text;
@@ -62,11 +61,11 @@ public class Article {
         }*/
     }
     
-    public void dropPhrases(){
+    /*public void dropPhrases(){
         for (int index = 0; index < phrases.size(); index++){
             if (StringUtils.countMatches(phrases.get(index).getTextAIDA(), ">") < 2) phrases.remove(index); //how will this influence the for loop? Do other phrases index--?
         }
-    }
+    }*/
     
     public String getText() {
         return text;

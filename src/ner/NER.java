@@ -47,6 +47,7 @@ public class NER {
 					currentMention = sentence.substring(mention.second, mention.third);	
 					evidenceBefore.setObject_name(currentMention);
 					evidenceBefore.setObject_type(mention.first);
+                                        System.out.println(sentence);
 					pattern = currentInput.substring(currentInput.indexOf(mentionBefore) + mentionBefore.length(), currentInput.indexOf(currentMention)).trim();
 					evidenceBefore.setPattern(pattern);
 					output.add(evidenceBefore);

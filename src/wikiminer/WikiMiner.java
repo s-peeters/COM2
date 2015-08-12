@@ -4,11 +4,14 @@
  * and open the template in the editor.
  */
 package wikiminer;
+import bean.Evidence;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import ner.NER;
 import tagger.POSTagger;
 
 /**
@@ -36,8 +39,11 @@ public class WikiMiner {
         String rest = deserializeString(file);
         String current;
         String[] split;
+        NER ner = new NER();
+        POSTagger tag = new POSTagger();
         rest = rest.split("====PAGE-START====",2)[1]; //remove first page start
         do{
+            List<Evidence> evidence;
             if(rest.contains("====PAGE-START====")){
                 split = rest.split("====PAGE-START====",2);
                 rest = split[1];
@@ -58,10 +64,13 @@ public class WikiMiner {
             //create Article object
             Article article = new Article(current, subject); 
             article.createPhrases();
-            //AIDA --> replace text in phrase object
-            article.dropPhrases();
+            //article.dropPhrases();   //removes phrases with less than 2 entities
             //postag
-            POSTagger.Tag(article);
+            tag.Tag(article);
+            evidence = ner.annotateArticle(article);
+            for(Evidence ev : evidence){
+                System.out.println(ev.toString());
+            }
         }
         while(rest != null);
     }

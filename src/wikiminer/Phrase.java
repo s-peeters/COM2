@@ -11,7 +11,6 @@ package wikiminer;
  */
 public class Phrase {
     private String text;
-    private String textAIDA;
     private String textTagged;
 
     public Phrase(String text) {
@@ -38,13 +37,6 @@ public class Phrase {
         //TO DO
     }
 
-    public String getTextAIDA() {
-        return textAIDA;
-    }
-
-    public void setTextAIDA(String textAIDA) {
-        this.textAIDA = textAIDA;
-    }
     /*
     public void createPhraseParts(){
         int entities = StringUtils.countMatches(textAIDA, ">"); //textAIDA

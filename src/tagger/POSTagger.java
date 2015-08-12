@@ -16,10 +16,14 @@ public class POSTagger {
 
     private final static String stanford_Tags[] = {"_CC", "_CD", "_JJ", "_MD", "_DT", "_PRP$", "_PRP"};
     private final static String yago_Tags[] = {" [[con]]", " [[num]]", " [[adj]]", " [[mod]]", " [[det]]", " [[prp]]", " [[pro]]"};
-    private final static MaxentTagger tagger = new MaxentTagger("english-left3words-distsim.tagger");
+    private final MaxentTagger tagger;
     private static String taggedText;
+
+    public POSTagger() {
+       tagger = new MaxentTagger("english-left3words-distsim.tagger");
+    }
     
-    public static String Tag(String phrase) throws IOException, ClassNotFoundException {
+    public String Tag(String phrase) throws IOException, ClassNotFoundException {
         // Initialize the tagger  
         //The initial tagged string before tags replacement
         String tagged = tagger.tagString(phrase);
@@ -35,7 +39,7 @@ public class POSTagger {
         return tagged;
     }
 
-      public static void Tag(Article article) throws IOException, ClassNotFoundException {
+      public void Tag(Article article) throws IOException, ClassNotFoundException {
           if(article.getPhrases().size() >0){
               for (int i=0;i<article.getPhrases().size();i++){
                   taggedText=Tag(article.getPhrases().get(i).getText());
