@@ -4,15 +4,12 @@
  * and open the template in the editor.
  */
 package wikiminer;
+import com.mysql.jdbc.StringUtils;
 import edu.stanford.nlp.ling.CoreLabel;
 import java.util.ArrayList;
-import edu.stanford.nlp.ling.HasWord;
-import edu.stanford.nlp.ling.Sentence;
 import edu.stanford.nlp.process.CoreLabelTokenFactory;
-import edu.stanford.nlp.process.DocumentPreprocessor;
 import edu.stanford.nlp.process.PTBTokenizer;
 import edu.stanford.nlp.process.WordToSentenceProcessor;
-import java.io.Reader;
 import java.io.StringReader;
 import java.util.List;
 
@@ -33,7 +30,7 @@ public class Article {
         phrases = new ArrayList();
     }
     
-    public void createSentences(){ 
+    public void createPhrases(){ 
         //// Tokenize
         List<CoreLabel> tokens = new ArrayList<>();
         PTBTokenizer<CoreLabel> tokenizer = new PTBTokenizer<>(new StringReader(text), new CoreLabelTokenFactory(), "");
@@ -64,6 +61,12 @@ public class Article {
             phrases.add(line);
             System.out.println(line.getText());
         }*/
+    }
+    
+    public void dropSentences(){
+        for (int index = 0; index < phrases.size(); index++){
+            int count = StringUtils.countMatches(phrases.get(index).getTextAIDA(), ">");
+        }
     }
     
     public String getText() {

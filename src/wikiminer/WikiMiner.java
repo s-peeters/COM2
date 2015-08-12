@@ -56,7 +56,7 @@ public class WikiMiner {
             current = current.replaceAll("(?m)^=.*", "");
             //create Article object
             Article article = new Article(current, subject); 
-            article.createSentences();
+            article.createPhrases();
             //AIDA --> replace text in phrase object
             //remove phrases with less than 2 entities
             //postag

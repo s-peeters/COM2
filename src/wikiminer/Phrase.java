@@ -37,6 +37,16 @@ public class Phrase {
     public void createTextTagged(){
         
     }
+
+    public String getTextAIDA() {
+        return textAIDA;
+    }
+
+    public void setTextAIDA(String textAIDA) {
+        this.textAIDA = textAIDA;
+    }
+    
+    
     
     
     
