@@ -31,50 +31,63 @@ public class NER {
 		for (Phrase sent : sentences){
 			String sentence = sent.getTextTagged();
 			List<Triple<String,Integer,Integer>> out = classifier.classifyToCharacterOffsets(sentence);
-			String currentInput = sentence;
-			String currentMention = null;
-			String mentionBefore = null;
+			
 			String pattern = null;
 			Evidence evidenceBefore = new Evidence();
+			String currentMention;
+			Triple<String,Integer,Integer> mentionBefore = null;
 
 			for (Triple<String,Integer,Integer> mention : out){
 				if (mentionBefore == null){
-					currentMention = sentence.substring(mention.second, mention.third);
+					currentMention = getMention(sentence, mention.second, mention.third);
 					evidenceBefore.setSubject_name(currentMention);
 					evidenceBefore.setSubject_type(mention.first);
-					mentionBefore = currentMention;
+					mentionBefore = mention;
 				}else{
-					currentMention = sentence.substring(mention.second, mention.third);	
+					currentMention = getMention(sentence, mention.second, mention.third);
+
+					if (currentMention.equals(mentionBefore))
+						continue;
 					evidenceBefore.setObject_name(currentMention);
 					evidenceBefore.setObject_type(mention.first);
-                                        System.out.println(sentence);
-					pattern = currentInput.substring(currentInput.indexOf(mentionBefore) + mentionBefore.length(), currentInput.indexOf(currentMention)).trim();
+					
+					pattern = sentence.substring(mentionBefore.third, mention.second).replaceAll("[^a-zA-Z0-9\\[\\] ]", "").replace("LRBLRB", "").replace("RRBRRB", "").toLowerCase().trim();
+					
 					evidenceBefore.setPattern(pattern);
 					output.add(evidenceBefore);
-					
-					currentInput = currentInput.substring(currentInput.indexOf(currentMention));
-					
+										
 					Evidence evidenceStart = new Evidence();
 					evidenceStart.setSubject_name(currentMention);
 					evidenceStart.setSubject_type(mention.first);	
 					
 					evidenceBefore = evidenceStart;
-					mentionBefore = currentMention;
+					mentionBefore = mention;
 				}
 			}
 		}
-		
-		System.out.println(output.toString());
-		return output;
-
+				return output;
 	}
 	
+	/**
+	 * 
+	 * @param sentence
+	 * @param begin
+	 * @param end
+	 * @return
+	 */
+	public String getMention(String sentence, int begin, int end){
+		String mention = sentence.substring(begin, end);
+		return mention;
+	}
+	
+	
 	public static void main(String[] args){
-		String text = "Albert Einstain was born [[det]] India. John Smith is a native of Finland and Helsinki and USA.";
+		String text = "At the age of 8, Albert Einstein was transferred to the Luitpold Gymnasium (now known as the Albert Einstein Gymnasium), where Albert Einstein received advanced primary and secondary school education until Albert Einstein left Germany seven years later.";
 		Article test = new Article(text);
 		test.createPhrases();
 		NER ner = new NER();
 		ner.annotateArticle(test);
 	}
+	
 
 }

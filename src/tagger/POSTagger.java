@@ -43,7 +43,6 @@ public class POSTagger {
           if(article.getPhrases().size() >0){
               for (int i=0;i<article.getPhrases().size();i++){
                   taggedText=Tag(article.getPhrases().get(i).getText());
-                  System.out.println(taggedText);
                   article.getPhrases().get(i).setTextTagged(taggedText);
               }
           }

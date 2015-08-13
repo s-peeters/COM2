@@ -5,14 +5,13 @@ package bean;
  * @author matteo
  *
  */
-public class Evidence {
+public class Evidence implements Comparable<Evidence>{
 	
 	private String subject_name;
 	private String object_name;
 	private String subject_type;
 	private String object_type;
 	private String pattern;
-	private String relations;
 	
 	/**
 	 * 
@@ -76,17 +75,16 @@ public class Evidence {
 		this.pattern = pattern;
 	}
 
-	public String getRelations() {
-		return relations;
-	}
-
-	public void setRelations(String relations) {
-		this.relations = relations;
-	}
 	
 	public String toString(){
-		String print = this.subject_name +" --- "+ this.subject_type +" --- "+ this.object_name +" --- "+ this.object_type +" --- "+ this.pattern;
+		String print = this.subject_name +" --- "+ this.object_name +" --- "+ this.pattern;
 		return print;
+	}
+
+	@Override
+	public int compareTo(Evidence o) {
+		int c = this.getSubject_name().compareTo(o.getSubject_name());
+		return c;
 	}
 
 
