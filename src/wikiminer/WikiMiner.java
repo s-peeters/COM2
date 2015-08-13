@@ -8,10 +8,16 @@ import bean.Evidence;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.apache.lucene.index.DirectoryReader;
+
 import ner.NER;
+import pattyindex.Indexer;
 import tagger.POSTagger;
 
 /**
@@ -19,13 +25,15 @@ import tagger.POSTagger;
  * @author samuelpeeters
  */
 public class WikiMiner {
-    private static final boolean replaceHe = true;
-    private static final String fileLocation = "/Users/samuelpeeters/Google Drive/School/COM2/Challenge/SummerSchoolData/IE-Challenge/Wiki-scientists/scientists-TEXT.txt";
+    private static final boolean replaceHe = false;
+    private static final String fileLocation = "/Users/matteo/Desktop/summerschool/IE-Challenge/Wiki-scientists/scientists-TEXT.txt";
+    private static StringBuffer facts = new StringBuffer();
     /**
      * @param args the command line arguments
+     * @throws Exception 
      */
     
-    public static void main(String[] args) throws ClassNotFoundException {
+    public static void main(String[] args) throws Exception {
         File file = new File(fileLocation); //insert file location here
         try {
             mine(file, replaceHe);
@@ -35,14 +43,17 @@ public class WikiMiner {
         }
     }
     
-    public static void mine(File file, boolean replaceHe) throws IOException, ClassNotFoundException{   //output type may need to be changed
+    public static void mine(File file, boolean replaceHe) throws Exception{   //output type may need to be changed
         String rest = deserializeString(file);
         String current;
         String[] split;
         NER ner = new NER();
         POSTagger tag = new POSTagger();
         rest = rest.split("====PAGE-START====",2)[1]; //remove first page start
+        Indexer index = new Indexer();
+        DirectoryReader reader = index.getReader();
         do{
+        	facts.delete(0, facts.length());
             List<Evidence> evidence;
             if(rest.contains("====PAGE-START====")){
                 split = rest.split("====PAGE-START====",2);
@@ -68,9 +79,14 @@ public class WikiMiner {
             //postag
             tag.Tag(article);
             evidence = ner.annotateArticle(article);
+            Collections.sort(evidence);
             for(Evidence ev : evidence){
-                System.out.println(ev.toString());
+                Set<String> relations = index.searchIndex(ev.getPattern(),reader);
+                for (String rel : relations){
+                	facts.append(rel+"("+ev.getSubject_name()+", "+ev.getObject_name()+")"+ " using pattern: --> " + ev.getPattern() + "\n");
+                }
             }
+            System.out.println(facts.toString());
         }
         while(rest != null);
     }

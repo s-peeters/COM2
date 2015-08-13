@@ -36,9 +36,10 @@ public class Indexer {
 	private String directoryIndex_path;
 	private String pattyFile_path;
 
-	public Indexer(String pattyFile, String directoryIndex){
-		this.directoryIndex_path = directoryIndex;
-		this.pattyFile_path = pattyFile;
+	public Indexer() throws Exception{
+		this.directoryIndex_path = "pattyindex/";
+		this.pattyFile_path = "patty/yago-relation-paraphrases.txt";
+		this.createIndex();
 	}
 
 	public Indexer(String directoryIndex){
@@ -90,11 +91,15 @@ public class Indexer {
 		}
 	}
 
-	public void searchIndex(String querystring) throws IOException, ParseException{
-		int MAX_HITS = 100;
-		Analyzer standardAnalyzer = new StandardAnalyzer(Version.LUCENE_44, CharArraySet.EMPTY_SET);
+	public DirectoryReader getReader() throws IOException{
 		Directory index_dir = FSDirectory.open(new File(this.directoryIndex_path));
 		DirectoryReader reader = DirectoryReader.open(index_dir);
+		return reader;
+	}
+	
+	public Set<String> searchIndex(String querystring, DirectoryReader reader) throws IOException, ParseException{
+		int MAX_HITS = 100;
+		Analyzer standardAnalyzer = new StandardAnalyzer(Version.LUCENE_44, CharArraySet.EMPTY_SET);
 		IndexSearcher searcher = new IndexSearcher(reader);
 		QueryParser qp = new QueryParser(Version.LUCENE_44, "pattern", standardAnalyzer);
 		Query query = qp.parse("\"" + querystring +"\"");
@@ -109,20 +114,11 @@ public class Indexer {
 			String patternMatched = doc.get("pattern");
 			if (patternMatched.length() == querystring.length()){
 				resultsSet.add(doc.get("relation"));
-				System.out.println(doc.get("pattern") + " --> " + doc.get("relation"));
 			}
 		}
-
-	}
-	
-	public static void main(String[] args) throws Exception{
-		String sentence = "was born";
-		String pattyfile = "/Users/matteo/Desktop/summerschool/IE-Challenge/PATTY/yago-relation-paraphrases.txt";
-		String pattyIndex = "/Users/matteo/Repositories/COM2/pattyindex";
 		
-		Indexer ind = new Indexer(pattyfile, pattyIndex);
-		ind.createIndex();
-		ind.searchIndex(sentence);
+		return resultsSet;
+
 	}
 
 }
