@@ -17,15 +17,17 @@ public class Article {
     private ArrayList<Phrase> phrases;
     private ArrayList facts;
     private String subject;
+    private String yagoIdArticle;
 
-    public Article(String text) {
+	public Article(String text) {
         this.text = text;
         phrases = new ArrayList();
     }
 
-    public Article(String text, String subject) {
+    public Article(String text, String subject, String yagoId) {
         this.text = text;
         this.subject = subject;
+        this.yagoIdArticle = yagoId;
         phrases = new ArrayList();
     }
     
@@ -90,4 +92,13 @@ public class Article {
     public void setFacts(ArrayList facts) {
         this.facts = facts;
     }
+    
+    public String getYagoIdArticle() {
+		return yagoIdArticle;
+	}
+
+	public void setYagoIdArticle(String yagoIdArticle) {
+		this.yagoIdArticle = yagoIdArticle;
+	}
+
 }
